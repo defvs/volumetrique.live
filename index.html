@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252a3d">
+	<meta name="apple-mobile-web-app-title" content="Volumetrique">
+	<meta name="application-name" content="Volumetrique">
+	<meta name="msapplication-TileColor" content="#252a3d">
+	<meta name="theme-color" content="#252a3d">
+	
+	<meta property="og:image:width" content="1852">
+	<meta property="og:image:height" content="970">
+	<meta property="og:description"
+		  content="I am a DJ who plays a lot of electronic music genres, from Drum &amp; Bass to Speedcore via Techcore/Speed Garage.">
+	<meta property="og:title" content="Volumetrique / Daniel">
+	<meta property="og:url" content="https://volumetrique.live/">
+	<meta property="og:image" content="https://volumetrique.live/og-image.jpg">
+	
+	<meta charset="UTF-8">
+	<title>Volumetrique / Daniel</title>
+</head>
+<body id="body">
+<div class="center-container">
+	<div class="centered-flex">
+		<div class="ratio ratio-16x9 w-100" id="embed">
+			<div id="embed-content">
+			
+			</div>
+		</div>
+		<div id="flex-horizontal-divider">
+			<ul class="link-container">
+				<li style="--glow-color: #A645FF"><a href="https://twitch.tv/volumetrique" target="_blank">
+					<img src="Twitch-Logo.png" alt="Twitch">
+					<span>Follow <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
+				</a></li>
+				<li style="--glow-color: #8d0000"><a href="https://www.youtube.com/channel/UCA-8abzeuoKeSfcaysVlT8Q" target="_blank">
+					<img src="YouTube-Logo.png" alt="Youtube">
+					<span>Watch <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
+				</a></li>
+				<li style="--glow-color: grey"><a href="https://mixcloud.com/volumetrique" target="_blank">
+					<img src="Mixcloud-Logo.png" alt="Mixcloud">
+					<span>Listen <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
+				</a></li>
+			</ul>
+			<ul class="small-link-container">
+				<li style="--glow-color: grey"><a target="_blank" href="https://discord.gg/cBJcrDf"><i class="bi bi-discord"></i></a></li>
+				<li style="--glow-color: grey"><a target="_blank" href="https://twitter.com/_cab13_"><i class="bi bi-twitter"></i></a></li>
+				<li style="--glow-color: grey"><a target="_blank" href="https://github.com/defvs"><i class="bi bi-github"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<video autoplay muted loop id="background-video">
+	<source src="background.mp4" type="video/mp4">
+</video>
+
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script type="application/javascript">
+	// Add event listener
+	document.addEventListener("mousemove", parallax);
+	const background = document.querySelector("#background-video");
+	const content = document.querySelector(".centered-flex");
+
+	function lerp (start, end, amt){
+		return (1-amt)*start+amt*end
+	}
+	
+	let previousX = null, previousY = null;
+	let timeout = null;
+	// Magic happens here
+	function parallax(e) {
+		if (timeout !== null) clearTimeout(timeout);
+		timeout = setTimeout()
+		let _w = window.innerWidth / 2;
+		let _h = window.innerHeight / 2;
+		let _mouseX = e.clientX;
+		let _mouseY = e.clientY;
+		if (previousX === null || previousY === null) {
+			previousX = _mouseX
+			previousY = _mouseY
+		}
+		previousX = _mouseX = lerp(previousX, _mouseX, 0.05);
+		previousY = _mouseY = lerp(previousY, _mouseY, 0.05);
+		let _r3dFactor = Math.sqrt(Math.pow(_mouseX - _w, 2) + Math.pow(_mouseY - _h, 2)) / ((_w + _h) / 2);
+		background.style.transform = `scale(1.2) translate(${-(_mouseX - _w) * 0.005}%, ${-(_mouseY - _h) * 0.005}%)`;
+		content.style.transform = `rotate3d(${-(_mouseY / _h - 1)}, ${_mouseX / _w - 1}, 0, ${_r3dFactor * 0.5}deg)`;
+	}
+
+	function embedYoutube() {
+		document.getElementById("embed-content").innerHTML = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/videoseries?list=UUA-8abzeuoKeSfcaysVlT8Q\"" +
+			" title=\"YouTube video player\"\n" +
+			" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
+	}
+
+	function embedTwitch() {
+		new Twitch.Embed("embed-content", {
+			width: "100%",
+			height: "100%",
+			channel: "volumetrique",
+			layout: "video",
+		});
+	}
+
+	fetch(`twitch-status.php`)
+		.then(response => response.json())
+		.then(json => {
+			if (json.data !== undefined && json.data[0] !== undefined && json.data[0].type === "live")
+				embedTwitch();
+			else embedYoutube();
+		})
+		.catch(error => {
+			embedYoutube();
+		})
+
+</script>
+</body>
+</html>
