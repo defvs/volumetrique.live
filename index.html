@@ -24,7 +24,7 @@
 	<meta property="og:image" content="https://volumetrique.live/og-image.jpg">
 	
 	<meta charset="UTF-8">
-	<title>Volumetrique / Daniel</title>
+	<title>Volumetrique / VTQ</title>
 </head>
 <body id="body">
 <div class="center-container">
@@ -36,23 +36,23 @@
 		</div>
 		<div id="flex-horizontal-divider">
 			<ul class="link-container">
-				<li style="--glow-color: #A645FF"><a href="https://twitch.tv/volumetrique" target="_blank">
-					<img src="Twitch-Logo.png" alt="Twitch">
-					<span>Follow <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
-				</a></li>
-				<li style="--glow-color: #8d0000"><a href="https://www.youtube.com/channel/UCA-8abzeuoKeSfcaysVlT8Q" target="_blank">
+				<li style="--glow-color: #8d0000" class="shrink"><a href="https://www.youtube.com/channel/UCA-8abzeuoKeSfcaysVlT8Q" target="_blank">
 					<img src="YouTube-Logo.png" alt="Youtube">
 					<span>Watch <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
 				</a></li>
-				<li style="--glow-color: grey"><a href="https://mixcloud.com/volumetrique" target="_blank">
-					<img src="Mixcloud-Logo.png" alt="Mixcloud">
+				<li style="--glow-color: grey" class="shrink"><a href="https://volumetrique.bandcamp.com/" target="_blank">
+					<img src="Bandcamp-Logo.png" alt="Bandcamp">
 					<span>Listen <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
+				</a></li>
+				<li style="--glow-color: #A645FF" class="shrink"><a href="https://twitch.tv/volumetrique" target="_blank">
+					<img src="Twitch-Logo.png" alt="Twitch">
+					<span>Follow <i style="font-size: 0.7em;" class="bi bi-box-arrow-up-right"></i></span>
 				</a></li>
 			</ul>
 			<ul class="small-link-container">
-				<li style="--glow-color: grey"><a target="_blank" href="https://discord.gg/cBJcrDf"><i class="bi bi-discord"></i></a></li>
-				<li style="--glow-color: grey"><a target="_blank" href="https://twitter.com/_cab13_"><i class="bi bi-twitter"></i></a></li>
-				<li style="--glow-color: grey"><a target="_blank" href="https://github.com/defvs"><i class="bi bi-github"></i></a></li>
+				<li class="small-link grow"><a target="_blank" href="https://discord.com/invite/kgd2YqB"><i class="bi bi-discord"></i></a></li>
+				<li class="small-link grow"><a target="_blank" href="https://twitter.com/volumetrique"><i class="bi bi-twitter"></i></a></li>
+				<li class="small-link grow"><a target="_blank" href="https://github.com/defvs"><i class="bi bi-github"></i></a></li>
 			</ul>
 		</div>
 	</div>
@@ -62,22 +62,46 @@
 </video>
 
 <script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"
+		integrity="sha512-4WiFjDu7uvt/4Yw48TE/yP5GqZE98yjsYiexx2UDCn8ZP145Uu0BexApj2mB1eHWX1u5DhZLN1jeHVPwwW+How==" crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js"
+		integrity="sha512-bwD3VD/j6ypSSnyjuaURidZksoVx3L1RPvTkleC48SbHCZsemT3VKMD39KknPnH728LLXVMTisESIBOAb5/W0Q==" crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/plugin/customParseFormat.min.js"
+		integrity="sha512-MEDaQO5NrqVRHuKXQ/N8mZa1BSoC7fvG5Mt3H1Y2VOnOda9d2z2TfSGwqt9clTiO/T242pGjoLfXCk1OSWqgKQ==" crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/plugin/timezone.min.js"
+		integrity="sha512-72V2JNSAxd3rsQIpDSAbCTQXD6gi91Cd/IFZ6NYwRjZSiIlIJfDrJLXq+UomWstOg+zGHWFfkTDl3APEUMoqlw==" crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/plugin/utc.min.js"
+		integrity="sha512-TU4ndEYOqql+pMXn14M8RDWsjjD+VPUA2RoWSuuFd+blPJW4oLrL1w1zAGdlrk4jsE2FEBH5CU3+fmogVYEqIQ==" crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/plugin/weekOfYear.min.js"
+		integrity="sha512-r6PdM7UHea0mdHsME1+5kfQdZLoxsFFOqFUXJ/9mf6lIhVtF2NGivqK7pS1IW9FRyRv/OS8U1NSRJ68qZv7Sug==" crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
 <script type="application/javascript">
+	dayjs.extend(dayjs.extend(window.dayjs_plugin_customParseFormat));
+	dayjs.extend(dayjs.extend(window.dayjs_plugin_utc));
+	dayjs.extend(dayjs.extend(window.dayjs_plugin_timezone));
+	dayjs.extend(dayjs.extend(window.dayjs_plugin_weekOfYear));
+
 	// Add event listener
 	document.addEventListener("mousemove", parallax);
 	const background = document.querySelector("#background-video");
 	const content = document.querySelector(".centered-flex");
 
-	function lerp (start, end, amt){
-		return (1-amt)*start+amt*end
+	function lerp(start, end, amt) {
+		return (1 - amt) * start + amt * end
 	}
-	
+
 	let previousX = null, previousY = null;
 	let timeout = null;
+
 	// Magic happens here
 	function parallax(e) {
 		if (timeout !== null) clearTimeout(timeout);
-		timeout = setTimeout()
+		timeout = setTimeout(() => parallax(e), 10)
 		let _w = window.innerWidth / 2;
 		let _h = window.innerHeight / 2;
 		let _mouseX = e.clientX;
@@ -86,8 +110,8 @@
 			previousX = _mouseX
 			previousY = _mouseY
 		}
-		previousX = _mouseX = lerp(previousX, _mouseX, 0.05);
-		previousY = _mouseY = lerp(previousY, _mouseY, 0.05);
+		previousX = _mouseX = lerp(previousX, _mouseX, 0.02);
+		previousY = _mouseY = lerp(previousY, _mouseY, 0.02);
 		let _r3dFactor = Math.sqrt(Math.pow(_mouseX - _w, 2) + Math.pow(_mouseY - _h, 2)) / ((_w + _h) / 2);
 		background.style.transform = `scale(1.2) translate(${-(_mouseX - _w) * 0.005}%, ${-(_mouseY - _h) * 0.005}%)`;
 		content.style.transform = `rotate3d(${-(_mouseY / _h - 1)}, ${_mouseX / _w - 1}, 0, ${_r3dFactor * 0.5}deg)`;
@@ -99,7 +123,10 @@
 			" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>"
 	}
 
+	let liveElement = document.getElementById("live-in");
+
 	function embedTwitch() {
+		liveElement.remove();
 		new Twitch.Embed("embed-content", {
 			width: "100%",
 			height: "100%",

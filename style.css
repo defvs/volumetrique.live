@@ -206,3 +206,21 @@ ul.link-container > li > a:hover > span {
 		font-size: 2.5em;
 	}
 }
+
+.small-link {
+	--glow-color: grey;
+}
+
+.grow {
+	transition: all 0.2s ease-in-out;
+}
+.grow:hover {
+	transform: scale(1.2);
+}
+
+.shrink {
+	transition: all 0.2s ease-in-out;
+}
+.shrink:hover {
+	transform: scale(0.975);
+}
