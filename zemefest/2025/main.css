@@ -1,0 +1,32 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+}
+
+#top-container {
+    height: 100%;
+    overflow: hidden;
+}
+
+#viewport {
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+}
+
+#list-group {
+    position: absolute;
+    top: 0;
+}
+
+#list-group > * {
+    margin-bottom: 8px;
+}
+
+.comment-amount {
+    margin-right: 8px;
+}

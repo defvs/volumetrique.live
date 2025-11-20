@@ -1,6 +1,6 @@
 <?php
-	$CLIENT_ID = "";
-	$APP_TOKEN = "";
+	$CLIENT_ID = "a0ziybzzlsgcgeb5mmj73svr5paqbu";
+	$APP_TOKEN = "iiszijscwxj4o72fgy74fycgqiv75e";
 	
 	if ($_SERVER['REQUEST_METHOD'] != 'GET') {
 		http_response_code(404);

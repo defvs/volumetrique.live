@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	
+	<!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="style.css" rel="stylesheet">
+	
+	
+	<title>Zemefest 2025</title>
+</head>
+<body class="text-light" style="overflow-x: hidden">
+
+<div class="container-fluid h-100">
+	<div id="video-content-embed" class="ratio ratio-16x9 order-1 gy-4 d-flex align-items-center justify-content-center">
+		<img id="embed-as-poster" src="graphics/cover_horiz.png">
+	</div>
+	
+	<div id="calcarousel" class="container-lg carousel slide" data-bs-ride="carousel" data-bs-interval="false"
+		 style="padding-bottom: 16px; display: none;">
+		<ol class="carousel-indicators" id="calendar-indicators">
+		</ol>
+		<div class="carousel-inner" id="calendar-contents" style="margin-bottom: 32px;">
+		</div>
+		<a class="carousel-control-prev" href="#calcarousel" role="button" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#calcarousel" role="button" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</a>
+	</div>
+	
+	<div id="other-stuff" class="container-lg" style="padding: 32px 0;">
+		<div class="row justify-content-center">
+			<div class="col-auto text-center">
+				<a class="btn d-block btn-outline-dark text-white btn-lg"
+				   href="https://tiltify.com/+zemefest-2025-dj-for-wwf/zemefest-2025-dj-for-wwf" target="_blank"
+				   rel="noopener"><img src="graphics/donate.svg" alt=""> Donate to WWF</a>
+				<!--<span class="d-block text-white m-1">Because of maintanance on the primary WWF website,<br> we are choosing to utilize GoFundMe as the primary pay system<br> for this year's Zemefest: 100% of the proceeds still goes to WWF,<br> and all donations are still eligible for Tax right-offs</span>-->
+				<!--
+				<a class="d-block text-white m-1"
+				   href="https://www.facebook.com/donate/619690390012457/" target="_blank"
+				   rel="noopener">Donation backup link</a>
+				   -->
+			</div>
+			<div class="col-auto text-center">
+				<a class="btn btn-outline-dark text-white btn-lg"
+				   href="https://zemefest.org" target="_blank"
+				   rel="noopener">Back to Zemefest website</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"
+		integrity="sha512-4WiFjDu7uvt/4Yw48TE/yP5GqZE98yjsYiexx2UDCn8ZP145Uu0BexApj2mB1eHWX1u5DhZLN1jeHVPwwW+How==" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.3/dayjs.min.js"
+		integrity="sha512-0fcCRl828lBlrSCa8QJY51mtNqTcHxabaXVLPgw/jPA5Nutujh6CbTdDgRzl9aSPYW/uuE7c4SffFUQFBAy6lg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.3/plugin/calendar.min.js"
+		integrity="sha512-GGLsMoCJJUngLBCVN3OPW6Ay93fixYkCWvQZMgdcnSP+lUX5PBX2tIi0+16DnMn4aYX9NFE/ztaNlxHongfNag==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.3/plugin/relativeTime.min.js"
+		integrity="sha512-BQqXM2ye6+98YyRQzE676pY2Bc4d3o/fBNlBQyKv2J9oKwp9K/4BVqFWIJBx1zKlAJ8M0PIJR5Yp51FsnSUynQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.3/plugin/utc.min.js"
+		integrity="sha512-m00bfmYnAl3plEBlQfeQUhw/U2uvmw29V2+jxSWpAjankMWS+zAsjezbKWDEJNXqWq9o9qQZSOiA2RKDpa4D5w==" crossorigin="anonymous"></script>
+
+<script>
+	dayjs.extend(window.dayjs_plugin_calendar);
+	dayjs.extend(window.dayjs_plugin_relativeTime);
+	dayjs.extend(window.dayjs_plugin_utc);
+
+	const objectMap = (obj, fn) =>
+		Object.fromEntries(
+			Object.entries(obj).map(
+				([k, v], i) => [k, fn(v, k, i)]
+			)
+		)
+
+	const calendarTemplate = "<div class=\"carousel-item text-light\"><div class=\"row justify-content-evenly align-items-center\"><div class=\"col-sm-auto\"><div class=\"mx-auto h2 carousel-text calendar-live-section\"><svg class=\"blinking live-blinker\"><circle cx=\"0.5em\" cy=\"0.4em\" r=\"0.3em\" fill=\"red\"/></svg><span class=\"calendar-live-text\">Now LIVE</span></div><div class=\"mx-auto h3 carousel-text\"><a class=\"calendar-streamer-twitch text-white text-decoration-none\" style=\"width: min-content; margin-top: 16px;\" href=\"#\" target=\"_blank\"><span class=\"calendar-streamer-name\">Volumetrique </span>&nbsp;<img src=\"graphics/twitch.svg\" alt=\"\"></a></div></div><div class=\"col-sm-auto calendar-countdown-section\"><div class=\"mx-auto h2 carousel-text calendar-countdown\">In X hours</div><div class=\"mx-auto h4 text-muted carousel-text calendar-time\">(time)</div></div></div>"
+
+	const carouselIndicator = "<li data-bs-target=\"#calcarousel\" data-bs-slide-to=\"0\" class=\"carousel-indicator-el\"></li>"
+
+	let intervals = [];
+
+	function redrawCarousel(data) {
+		intervals.forEach((value) => {
+			clearInterval(value)
+		});
+		intervals = [];
+		$('#calendar-indicators').empty();
+		$('#calendar-contents').empty();
+
+		if (data.length !== 0) {
+			data.forEach((e, i) => {
+				let el = $(calendarTemplate).appendTo("#calendar-contents");
+				el.find(".calendar-streamer-name").text(e['summary']);
+				el.find(".calendar-streamer-twitch").attr("href", "https://twitch.tv/" + e["x-teamup-twitch-username"]);
+				if (e.dtstart < Date.now() && e.dtend > Date.now()) {
+					$("#embed-as-poster").hide();
+					$("#video-content-embed").empty().append(`<iframe style="height: 100%; width: 100%;" src="https://player.twitch.tv/?channel=${e["x-teamup-twitch-username"]}&parent=zemefest.volumetrique.live" />`)
+
+					el.find(".calendar-countdown-section").hide();
+					el.find("calendar-live-text").text("Now LIVE");
+				} else {
+					if (data[0].dtstart < Date.now()) {
+						el.find(".live-blinker").hide();
+						el.find(".calendar-live-text").text("Next up");
+					} else {
+						el.find(".calendar-live-section").hide();
+					}
+					el.find(".calendar-countdown").text("In " + dayjs.utc(e.dtstart).local().fromNow(true))
+					el.find(".calendar-time").text(dayjs.utc(e.dtstart).local().calendar())
+					intervals.push(setInterval(() => {
+						el.find(".calendar-countdown").text("In " + dayjs.utc(e.dtstart).local().fromNow(true))
+						el.find(".calendar-time").text(dayjs.utc(e.dtstart).local().calendar())
+					}, 60000));
+				}
+
+				let indicator_el = $(carouselIndicator).appendTo("#calendar-indicators");
+				indicator_el.attr("data-bs-slide-to", i);
+				if (i === 0) {
+					el.addClass("active")
+					indicator_el.addClass("active")
+				}
+			})
+			$("#calcarousel").show();
+			if (data[0].dtstart > Date.now())
+				setTimeout(() => redrawCarousel(data), Math.min(data[0].dtstart - Date.now(), 2147483647));
+			else
+				setTimeout(() => redrawCarousel(data), data[1].dtend - Date.now());
+
+		}
+	}
+
+	$.ajax({
+		url: "live-calendar/calendarcache.php",
+		context: document.body,
+		success: function (data) {
+			let allEvent = ICAL.parse(data)[2]
+				.filter(e => e[0] === "vevent")
+				.map(e => e.filter(ee => (Array.isArray(ee) && ee.length !== 0)))
+				.flatMap(e => e.map(ee => ee.filter(eee => ["dtstart", "dtend", "summary", "x-teamup-twitch-username"].includes(eee[0]))))
+				.map(e => e.map(ee => {
+					let obj = {};
+					obj[ee[0]] = ee.splice(1);
+					return obj
+				}))
+				.map(e => Object.assign(...e))
+				.map(e => objectMap(e, ee => ee[2]))
+				.map(e => {
+					e.dtstart = dayjs.utc(e.dtstart).valueOf();
+					e.dtend = dayjs.utc(e.dtend).valueOf();
+					return e
+				})
+				.filter(e => e.dtend > Date.now())
+				.sort((a, b) => a.dtstart - b.dtstart);
+
+			redrawCarousel(allEvent);
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Bar</title>
+    <style>
+        :root {
+            --bar-color: blue;
+            --empty-bar-color: lightblue;
+            --text-color: white;
+            --font-family: Arial, sans-serif;
+            --font-size: 24px;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+        }
+
+        .donation-bar {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            background: var(--empty-bar-color);
+            overflow: hidden;
+        }
+
+        .filled-part {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--bar-color);
+            transition: width 0.5s ease;
+        }
+
+        .text {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="donation-bar">
+        <div class="filled-part"></div>
+        <div class="text" id="donation-text">0/0</div>
+    </div>
+
+    <script>
+        const filledPart = document.querySelector('.filled-part');
+        const donationText = document.getElementById('donation-text');
+
+        async function fetchDonationData() {
+            try {
+                const response = await fetch('https://zemefest.volumetrique.live/2025/tiltify.php');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching donation data:', error);
+                return null;
+            }
+        }
+
+        function updateBar(data) {
+            if (!data) return;
+
+            const amount = parseFloat(data.amount_raised.value);
+            const goal = parseFloat(data.goal.value);
+
+            const percentage = (amount / goal) * 100;
+            filledPart.style.width = `${Math.min(percentage, 100)}%`;
+            donationText.textContent = `\$${amount.toFixed(2)} / \$${goal.toFixed(0)}`;
+        }
+
+        async function updateDonationBar() {
+            const data = await fetchDonationData();
+            updateBar(data);
+        }
+
+        // Initial update
+        updateDonationBar();
+
+        // Update every 15 seconds
+        setInterval(updateDonationBar, 15000);
+    </script>
+</body>
+</html>

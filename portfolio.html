@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Volumetrique's Portfolio">
+    <meta property="og:site_name" content="Volumetrique / VTQ">
+    <meta property="og:url" content="https://volumetrique.live/portfolio">
+    <meta property="og:description" content="Bass Music DJ / Producer; Audio Engineering (Mixing / Mastering); Label Owner @ Rolling Bassline">
+    <meta property="og:type" content="music.musician">
+    <meta property="og:image" content="https://volumetrique.live/og_embed.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="volumetrique.live">
+    <meta property="twitter:url" content="https://volumetrique.live/portfolio">
+    <meta name="twitter:title" content="Volumetrique's Portfolio">
+    <meta name="twitter:description" content="Bass Music DJ / Producer; Audio Engineering (Mixing / Mastering); Label Owner @ Rolling Bassline">
+    <meta name="twitter:image" content="https://volumetrique.live/og_embed.png">
+    <title>Volumetrique's Portfolio</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=JetBrains+Mono:wght@300;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-purple: #12071F;
+            --accent: #7B3DF4;
+            --accent-lighter: #a67df8;
+            --accent2: #4e89a6;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            background-color: var(--deep-purple);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .profile-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            margin: 2rem auto;
+            background: url('/pfp.jpg') center/cover;
+            box-shadow: 0 0 30px rgba(123, 61, 244, 0.2);
+            background-size: cover;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .intro p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: rgba(200, 200, 200, 0.7);
+            max-width: 600px;
+            margin: 0 auto 1rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem;
+            background: linear-gradient(45deg, var(--accent2), var(--accent), var(--accent2));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient-flow 10s ease-in-out infinite;
+        }
+        
+        @keyframes gradient-flow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .section p {
+            font-family: 'JetBrains Mono', monospace;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Section Styles */
+        .contact-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .tagline {
+            font-family: 'JetBrains Mono', monospace;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            margin-top: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline span {
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: transform 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .contact-btn i {
+            font-size: small;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .section {
+                margin: 1.5rem 0;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .pricing-table {
+                font-size: 0.85rem;
+                gap: 0.5rem 1rem;
+                grid-template-columns: auto;
+            }
+            
+            .socials {
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            .social-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .tagline span {
+                display: inline;
+                margin: 0 0.5rem;
+            }
+            
+            .pricing-table {
+                grid-template-columns: auto auto;
+            }
+        }
+
+        .pricing-table {
+            display: grid;
+            gap: 0.5rem 1.5rem;
+            margin: 1.5rem auto;
+            max-width: 500px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pricing-table div {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .pricing-service {
+            font-weight: 300;
+        }
+
+        .pricing-price {
+            color: var(--accent-lighter);
+            font-weight: 500;
+        }
+
+        .divider {
+            width: 50%;
+            margin: 1.5rem auto;
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 400px;
+            margin: 1rem auto 2rem;
+            line-height: 1.4;
+            text-align: justify;
+            padding: 0 1rem;
+            text-justify: auto;
+        }
+
+        .socials {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+            max-width: none;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 0 0;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #333333;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .social-btn:hover {
+            background: #f8f8f8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            margin: 3rem 0 1rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-smaller {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.6rem;
+        }
+
+    .iframe-placeholder {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 1rem 0;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+    }
+
+    .placeholder-content {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .placeholder-text {
+        margin-bottom: 1.5rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .enable-btn, .open-external-content-btn {
+        padding: 0.75rem 1.5rem;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-family: 'Montserrat', sans-serif;
+        transition: transform 0.3s ease;
+        display: inline-block;
+        font-size: small;
+        text-decoration: none;
+    }
+
+    .open-external-content-btn > i.fas {
+        margin-left: 1em;
+    }
+
+    .enable-btn:hover, .open-external-content-btn:hover {
+        transform: scale(1.05);
+    }
+    
+    .soundcloud-container > div {
+        font-size: 0.9rem !important;
+        font-family: 'JetBrains Mono', monospace !important;
+    }
+    
+    .soundcloud-container > div > a {
+        font-size: 0.9rem !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        transition: color 0.3s ease;
+    }
+    
+    .soundcloud-container > div > a:hover {
+        color: rgba(255, 255, 255, 1) !important;
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="profile-circle"></div>
+        <h1>Volumetrique's Portfolio</h1>
+        <div class="socials">
+            <a href="https://volumetrique.live" class="social-btn" target="" rel="">
+                <i class="fas fa-globe"></i>
+            </a>
+
+            <a href="https://youtube.com/@Volumetrique" class="social-btn" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-youtube"></i>
+            </a>
+
+            <a href="https://soundcloud.com/volumetrique" class="social-btn" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-soundcloud"></i>
+            </a>
+        </div>
+        <div class="intro">
+            <p>
+                DJ / Producer<br>
+                Audio Engineer<br>
+                Label Owner<br>
+                🥾🏔️️️, 🇫🇷
+            </p>
+        </div>
+    </header>
+
+    <div class="section">
+        <h2>Music Production</h2>
+        <p>Bass Music and Hardtechno</p>
+        <div class="pricing-table">
+            <div><span class="pricing-service">Original Song</span><span class="pricing-price">$150~200+</span></div>
+            <div><span class="pricing-service">Remix</span><span class="pricing-price">Contact me</span></div>
+            <div><span class="pricing-service">1-on-1 classes</span><span class="pricing-price">$35/h</span></div>
+        </div>
+        <div class="iframe-placeholder" 
+            data-src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1984047848&color=%237B3DF4&auto_play=false&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=true"
+            data-attribution='<a href="https://soundcloud.com/volumetrique" title="Volumetrique / VTQ" style="color: #cccccc; text-decoration: none;">Volumetrique / VTQ</a> · <a href="https://soundcloud.com/volumetrique/sets/all-tracks" title="All Tracks" style="color: #cccccc; text-decoration: none;">All Tracks</a>'>
+            <div class="placeholder-content">
+                <p class="placeholder-text">This SoundCloud embed might collect cookies which requires your consent.</p>
+                <button class="enable-btn">Enable</button>
+                <a class="open-external-content-btn" href="https://soundcloud.com/volumetrique/sets/all-tracks" target="_blank" rel="noopener noreferrer">Open externally <i class="fas fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </div>
+        <div class="soundcloud-container"></div>
+    </div>
+
+    <div class="section">
+        <h2>Mixing & Mastering</h2>
+        <p>Electronic, Orchestral, Rock & Metal</p>
+        <div class="pricing-table">
+            <div><span class="pricing-service">Per Song</span><span class="pricing-price">$35</span></div>
+            <div><span class="pricing-service">Full Album (6+ songs)</span><span class="pricing-price">$200</span></div>
+            <div><span class="pricing-service">Advice & 1-on-1s</span><span class="pricing-price">Contact Me</span>
+            </div>
+        </div>
+        <!-- <div class="video-placeholder"
+            style="background: rgba(0,0,0,0.3); border-radius: 15px; padding: 56.25% 0 0 0; position: relative;">
+        </div> -->
+    </div>
+
+    <div class="section">
+        <h2>DJing & Studio Mixes</h2>
+        <p>Live DJing, pre-recorded sets, XFD, Mashups.</p>
+        <div class="pricing-table">
+            <div><span class="pricing-service">DJ Mix / Studio Mix</span><span class="pricing-price">$50/h</span></div>
+            <div><span class="pricing-service">Album XFD / Short mixes</span><span class="pricing-price">$50+</span>
+            </div>
+            <div><span class="pricing-service">Mashups</span><span class="pricing-price">Contact Me</span></div>
+            <div><span class="pricing-service">1-on-1 classes</span><span class="pricing-price">$35/h</span></div>
+        </div>
+        <div class="iframe-placeholder" 
+            data-src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1752602931&color=%237B3DF4&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true"
+            data-attribution='<a href="https://soundcloud.com/volumetrique" title="Volumetrique / VTQ" style="color: #cccccc; text-decoration: none;">Volumetrique / VTQ</a> · <a href="https://soundcloud.com/volumetrique/sets/all-djmix" title="All MIXES &amp; MASHUPS" style="color: #cccccc; text-decoration: none;">All MIXES &amp; MASHUPS</a>'>
+            <div class="placeholder-content">
+                <p class="placeholder-text">This SoundCloud embed might collect cookies which requires your consent.</p>
+                <button class="enable-btn">Enable</button>
+                <a class="open-external-content-btn" href="https://soundcloud.com/volumetrique/sets/all-djmix" target="_blank" rel="noopener noreferrer">Open Externally <i class="fas fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </div>
+        <div class="soundcloud-container"></div>
+    </div>
+
+    <div class="contact-section">
+        <div class="tagline">
+            <span>Need any services?</span>
+            <span>Specific pricing?</span>
+            <span>More information?</span>
+        </div>
+        <a href="mailto:volumetrique@rollingbassline.com" class="contact-btn">CONTACT
+            ME<br><i>volumetrique@rollingbassline.com</i></a>
+        <div class="tagline">
+            <span>Or on Discord:</span>
+            <span>@volumetrique</span>
+        </div>
+        <div class="disclaimer">
+            ※ All prices are estimates only. Commission availability and specific deadlines
+            can only be confirmed through direct contact. Prices subject to project scope.
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2025 Daniel THIRION. All Rights Reserved.<br>
+        <span class="footer-smaller">
+            <!--Music copyrighted to their respective rightholders and owners.<br>-->
+            Generative AI copy or training of my music, videos or photos is prohibited.
+        </span>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profile = document.querySelector('.profile-circle');
+            // 5% chance (1 in 20)
+            if (Math.floor(Math.random() * 20) === 0) {
+                profile.style.backgroundImage = "url('/pfp-special.jpg')";
+            } else {
+                profile.style.backgroundImage = "url('/pfp.jpg')";
+            }
+
+            document.querySelectorAll('.enable-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    // Process all placeholders when any button is clicked
+                    document.querySelectorAll('.iframe-placeholder').forEach(placeholder => {
+                        const container = placeholder.parentElement.querySelector('.soundcloud-container');
+
+                        // Only process if not already processed
+                        if (!container.hasChildNodes()) {
+                            // Create iframe
+                            const iframe = document.createElement('iframe');
+                            iframe.width = '100%';
+                            iframe.height = '450';
+                            iframe.frameBorder = '0';
+                            iframe.scrolling = 'no';
+                            iframe.allow = 'autoplay';
+                            iframe.src = placeholder.dataset.src;
+
+                            // Create attribution
+                            const attribution = document.createElement('div');
+                            attribution.style.cssText = 'font-size: 10px; color: #cccccc; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Garuda, Verdana, Tahoma, sans-serif; font-weight: 100;';
+                            attribution.innerHTML = placeholder.dataset.attribution;
+
+                            // Insert elements
+                            container.appendChild(iframe);
+                            container.appendChild(attribution);
+                        }
+
+                        // Hide placeholder
+                        placeholder.style.display = 'none';
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

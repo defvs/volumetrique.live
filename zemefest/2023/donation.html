@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Thermometer</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+		* {
+			font-family: 'Poppins', sans-serif;
+			--fill-color: #03fcf4;
+			--stripe-1-color: #75DEF520;
+			--stripe-2-color: #75DEF540;
+		}
+
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		#thermometer {
+			position: relative;
+			height: calc(100% - 20px); /* Subtract 20px to account for top and bottom margin */
+			background-color: #F0F0F0;
+			background-image: repeating-linear-gradient(-45deg, var(--stripe-1-color), var(--stripe-1-color) 6vh, var(--stripe-2-color) 6vh, var(--stripe-2-color) 12vh);
+			background-size: 100% 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: background-image 1s linear;
+			border: 10px solid black;
+			border-radius: 50px;
+			overflow: hidden;
+		}
+
+		#thermometer::before {
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			content: "";
+			background-color: var(--fill-color);
+			width: var(--percentage);
+			transition: width 1s linear;
+		}
+
+		#amount-raised {
+			font-size: 3em;
+			color: black;
+			text-shadow: 2px 2px white;
+			z-index: 1000;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div id="thermometer">
+		<span id="amount-raised">$0</span>
+	</div>
+</body>
+<script>
+	const apiUrl = "./simple_fetcher.php"; // Replace with the API URL
+	const thermometerElement = document.getElementById("thermometer");
+	const amountRaisedElement = document.getElementById("amount-raised");
+	const options = {
+			mode: "no-cors"
+		}
+	function updateThermometer() {
+		fetch(new Request(apiUrl, options))
+			.then(response => response.json())
+			.then(data => {
+				// Set the progress bar percentage
+				const percentage = data.amountPercentage + "%";
+				thermometerElement.style.setProperty("--percentage", percentage);
+
+				// Set the amount raised text
+				const amountRaised = "$" + data.amountRaised.toLocaleString();
+				const totalGoal = "$" + data.totalGoal.toLocaleString();
+				amountRaisedElement.innerText = `${amountRaised} / ${totalGoal}`;
+			})
+			.catch(error => console.error(error));
+	}
+
+	updateThermometer();
+	setInterval(updateThermometer, 30 * 1000); // Update every 30 seconds
+
+	// Force a reflow to trigger the CSS transition
+	window.setTimeout(() => {
+		thermometerElement.style.backgroundImage = thermometerElement.style.backgroundImage.replace(/\bneon\b/g, "normal");
+	}, 0);
+</script>
+
+</html>
