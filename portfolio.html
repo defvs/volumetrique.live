@@ -42,13 +42,20 @@
         }
 
         .profile-circle {
-            width: 250px;
-            height: 250px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             margin: 2rem auto;
             background: url('/pfp.jpg') center/cover;
             box-shadow: 0 0 30px rgba(123, 61, 244, 0.2);
             background-size: cover;
+        }
+
+        @media (max-width: 540px) {
+            .profile-circle {
+                width: 150px;
+                height: 150px;
+            }
         }
 
         h1 {
@@ -366,12 +373,14 @@
             padding: 1.2rem;
             box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
             display: grid;
-            grid-template-columns: 1fr 1.1fr;
+            grid-template-columns: auto 1fr;
             gap: 1rem;
             align-items: center;
             text-align: left;
             text-decoration: none;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
+            min-height: 260px;
+            height: 280px;
         }
 
         .mixing-carousel-image {
@@ -381,6 +390,9 @@
             overflow: hidden;
             aspect-ratio: 1 / 1;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+            width: min(220px, 32vw);
+            height: min(220px, 32vw);
+            flex-shrink: 0;
         }
 
         .mixing-carousel-image img {
@@ -394,6 +406,9 @@
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
+            min-height: 0;
+            height: 100%;
+            justify-content: center;
         }
 
         .mixing-carousel-kicker {
@@ -416,10 +431,90 @@
             color: rgba(255, 255, 255, 0.82);
             line-height: 1.55;
             font-size: 1.05rem;
+            max-height: 5.4rem;
+            overflow: hidden;
+            position: relative;
+            padding: 0.35rem 0;
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000 12%, #000 88%, rgba(0, 0, 0, 0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000 12%, #000 88%, rgba(0, 0, 0, 0) 100%);
         }
 
         .mixing-carousel-card .mixing-carousel-description {
             color: rgba(255, 255, 255, 0.82);
+        }
+
+        .mixing-carousel-description__inner {
+            display: block;
+            transform: translateY(0);
+            --scroll-distance: 0px;
+        }
+
+        .mixing-carousel-description.is-scrolling .mixing-carousel-description__inner {
+            animation: scroll-vertical var(--scroll-duration, 12s) linear infinite alternate;
+            will-change: transform;
+        }
+
+        .mixing-carousel-card.no-link {
+            cursor: default;
+        }
+
+        .mixing-carousel-card.no-link:hover {
+            transform: none;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes scroll-vertical {
+            0% {
+                transform: translateY(0);
+            }
+
+            10% {
+                transform: translateY(0);
+            }
+
+            90% {
+                transform: translateY(calc(-1 * var(--scroll-distance)));
+            }
+
+            100% {
+                transform: translateY(calc(-1 * var(--scroll-distance)));
+            }
+        }
+
+        .mixing-carousel-card.is-recommendation .mixing-carousel-image {
+            border-radius: 50%;
+            max-width: 180px;
+            width: min(180px, 32vw);
+            height: min(180px, 32vw);
+            margin: 0 auto;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 10px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        .mixing-carousel-card.is-recommendation .mixing-carousel-image img {
+            border-radius: 50%;
+        }
+
+        .mixing-carousel-card.is-recommendation .mixing-carousel-title {
+            font-size: 1.4rem;
+        }
+
+        .mixing-carousel-card.is-recommendation .mixing-carousel-description {
+            position: relative;
+            padding: 0.9rem 1.1rem 0.9rem 1.2rem;
+            border-left: 3px solid var(--accent);
+            background: rgba(255, 255, 255, 0.04);
+            font-style: italic;
+        }
+
+        .mixing-carousel-card.is-recommendation .mixing-carousel-description::before {
+            content: '\"';
+            position: absolute;
+            left: 0.4rem;
+            top: 0.4rem;
+            font-size: 1.7rem;
+            color: var(--accent);
+            line-height: 1;
         }
 
         .mixing-carousel-controls {
@@ -482,12 +577,25 @@
         @media (max-width: 900px) {
             .mixing-carousel-card {
                 grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .mixing-carousel-image {
+                width: 100%;
+                height: auto;
+                max-width: 360px;
+                margin: 0 auto;
             }
         }
 
         @media (max-width: 540px) {
             .mixing-carousel-card {
                 padding: 1rem;
+            }
+
+            .mixing-carousel-card.is-recommendation .mixing-carousel-image {
+                max-width: 140px;
+                height: auto;
             }
         }
     </style>
@@ -684,6 +792,7 @@
             if (!carousel) return;
 
             const imageEl = carousel.querySelector('.mixing-carousel-image img');
+            const kickerEl = carousel.querySelector('.mixing-carousel-kicker');
             const titleEl = carousel.querySelector('.mixing-carousel-title');
             const descEl = carousel.querySelector('.mixing-carousel-description');
             const counterEl = carousel.querySelector('.carousel-counter');
@@ -692,8 +801,40 @@
             const nextBtn = carousel.querySelector('[data-nav=\"next\"]');
             const controls = carousel.querySelector('.mixing-carousel-controls');
 
+            let descInner = descEl.querySelector('.mixing-carousel-description__inner');
+            if (!descInner) {
+                descInner = document.createElement('span');
+                descInner.className = 'mixing-carousel-description__inner';
+                while (descEl.firstChild) {
+                    descInner.appendChild(descEl.firstChild);
+                }
+                descEl.appendChild(descInner);
+            }
+
             let slides = [];
             let index = 0;
+
+            const updateScrollState = () => {
+                requestAnimationFrame(() => {
+                    const rawDistance = descInner.scrollHeight - descEl.clientHeight;
+                    const distance = Math.max(0, Math.ceil(rawDistance + 24));
+                    const shouldScroll = distance > 2;
+                    descEl.classList.toggle('is-scrolling', shouldScroll);
+                    if (shouldScroll) {
+                        const duration = Math.max(12, Math.min(24, distance / 8));
+                        descInner.style.setProperty('--scroll-distance', `${distance}px`);
+                        descInner.style.setProperty('--scroll-duration', `${duration}s`);
+                    } else {
+                        descInner.style.removeProperty('--scroll-distance');
+                        descInner.style.removeProperty('--scroll-duration');
+                    }
+                });
+            };
+
+            const isRecommendationSlide = (slide) => {
+                const type = (slide?.type || '').toString().toLowerCase();
+                return type === 'recommendation' || type === 'recomendation';
+            };
 
             const updateNavVisibility = () => {
                 const showNav = slides.length > 1;
@@ -704,35 +845,58 @@
 
             const render = () => {
                 if (!slides.length) {
+                    kickerEl.textContent = 'Recent Work';
                     titleEl.textContent = 'Add projects to mixing-carousel.json';
-                    descEl.textContent = 'Include title, description, image, and optional link to populate the carousel.';
+                    descInner.textContent = 'Include title, description, image, and optional link to populate the carousel.';
                     cardLink.removeAttribute('href');
                     cardLink.removeAttribute('target');
                     cardLink.removeAttribute('rel');
+                    cardLink.classList.remove('is-recommendation', 'no-link');
+                    cardLink.setAttribute('aria-disabled', 'true');
+                    cardLink.tabIndex = -1;
                     counterEl.textContent = '0/0';
+                    updateNavVisibility();
+                    updateScrollState();
                     return;
                 }
 
                 // Wrap index once here to keep navigation resilient
                 index = (index + slides.length) % slides.length;
                 const slide = slides[index];
+                const isRecommendation = isRecommendationSlide(slide);
+                const hasLink = Boolean(slide?.link) && !isRecommendation;
+                const displayTitle = isRecommendation
+                    ? (slide?.name || slide?.title || 'Client')
+                    : (slide?.title || 'Untitled Project');
+                const kickerText = slide?.kicker || (isRecommendation ? 'Recommendation' : 'Recent Work');
+                const descText = slide?.quote || slide?.description || '';
+
                 imageEl.src = slide.image;
-                imageEl.alt = slide.title || 'Mixing and mastering project artwork';
-                titleEl.textContent = slide.title || 'Untitled Project';
-                descEl.textContent = slide.description || '';
+                imageEl.alt = slide.alt || (isRecommendation ? `${displayTitle}'s recommendation` : (slide.title || 'Mixing and mastering project artwork'));
+                kickerEl.textContent = kickerText;
+                titleEl.textContent = displayTitle;
+                descInner.textContent = descText;
                 counterEl.textContent = `${index + 1}/${slides.length}`;
 
-                const hasLink = Boolean(slide.link);
-                cardLink.href = hasLink ? slide.link : '#';
+                cardLink.classList.toggle('is-recommendation', isRecommendation);
+                cardLink.classList.toggle('no-link', !hasLink);
+
                 if (hasLink) {
+                    cardLink.href = slide.link;
                     cardLink.target = '_blank';
                     cardLink.rel = 'noopener noreferrer';
+                    cardLink.removeAttribute('aria-disabled');
+                    cardLink.tabIndex = 0;
                 } else {
+                    cardLink.removeAttribute('href');
                     cardLink.removeAttribute('target');
                     cardLink.removeAttribute('rel');
+                    cardLink.setAttribute('aria-disabled', 'true');
+                    cardLink.tabIndex = -1;
                 }
 
                 updateNavVisibility();
+                updateScrollState();
             };
 
             const move = (delta) => {
@@ -744,7 +908,9 @@
             prevBtn.addEventListener('click', () => move(-1));
             nextBtn.addEventListener('click', () => move(1));
             cardLink.addEventListener('click', (event) => {
-                if (!slides.length || !slides[index] || !slides[index].link) {
+                const slide = slides[index];
+                const linkAllowed = slide && slide.link && !isRecommendationSlide(slide);
+                if (!slides.length || !linkAllowed) {
                     event.preventDefault();
                 }
             });
@@ -759,20 +925,14 @@
                         slides = [];
                     }
 
-                    if (!slides.length) {
-                        titleEl.textContent = 'Add projects to mixing-carousel.json';
-                        descEl.textContent = 'Include title, description, image, and optional link to populate the carousel.';
-                        updateNavVisibility();
-                        return;
-                    }
-
                     render();
                 })
                 .catch(error => {
                     console.error('Error loading carousel data:', error);
                     titleEl.textContent = 'Unable to load projects right now.';
-                    descEl.textContent = 'Check mixing-carousel.json or refresh to try again.';
+                    descInner.textContent = 'Check mixing-carousel.json or refresh to try again.';
                     updateNavVisibility();
+                    updateScrollState();
                 });
         }
     </script>
