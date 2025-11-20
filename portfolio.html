@@ -485,6 +485,11 @@
             }
         }
 
+        .mixing-carousel-card.is-recommendation {
+            min-height: 340px;
+            height: auto;
+        }
+
         .mixing-carousel-card.is-recommendation .mixing-carousel-image {
             border-radius: 50%;
             max-width: 180px;
@@ -509,6 +514,7 @@
             border-left: 3px solid var(--accent);
             background: rgba(255, 255, 255, 0.04);
             font-style: italic;
+            max-height: 8.5rem;
         }
 
         .mixing-carousel-card.is-recommendation .mixing-carousel-description::before {
@@ -602,6 +608,14 @@
                 height: auto;
             }
         }
+
+        .recommendations-carousel-wrapper {
+            width: 100%;
+            max-width: calc(800px + 4rem);
+            margin: 0 auto 2rem;
+            padding: 0 0;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 
@@ -631,6 +645,34 @@
             </p>
         </div>
     </header>
+
+    <div class="recommendations-carousel-wrapper">
+        <div class="mixing-carousel" data-carousel="recommendations">
+            <div class="mixing-carousel-shell">
+                <a class="mixing-carousel-card is-recommendation" href="#" aria-disabled="true">
+                    <div class="mixing-carousel-image">
+                        <img src="assets/mixing/project-hybrid.svg" alt="Client recommendation avatar" loading="lazy">
+                    </div>
+                    <div class="mixing-carousel-copy">
+                        <div class="mixing-carousel-kicker">Recommendation</div>
+                        <h3 class="mixing-carousel-title">Loading recommendations...</h3>
+                        <p class="mixing-carousel-description">Fetching testimonials. Check back in a moment.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="mixing-carousel-controls">
+                <button class="carousel-btn" type="button" data-nav="prev" aria-label="Previous recommendation">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="mixing-carousel-meta">
+                    <span class="carousel-counter">0/0</span>
+                </div>
+                <button class="carousel-btn" type="button" data-nav="next" aria-label="Next recommendation">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div class="section">
         <h2>Mixing & Mastering</h2>
@@ -788,11 +830,45 @@
                 });
             });
 
-            initMixingCarousel();
+            const carouselDataPromise = fetchCarouselData();
+
+            initCarousel('[data-carousel="recommendations"]', carouselDataPromise, {
+                filter: isRecommendationSlide,
+                defaultKicker: 'Recommendation',
+                emptyTitle: 'Add recommendations to mixing-carousel.json',
+                emptyDescription: 'Tag entries with type: "recommendation" to feature client quotes here.',
+                failTitle: 'Unable to load recommendations right now.',
+                failDescription: 'Check mixing-carousel.json or refresh to try again.'
+            });
+
+            initCarousel('[data-carousel="mixing"]', carouselDataPromise, {
+                filter: (slide) => !isRecommendationSlide(slide),
+                defaultKicker: 'Recent Work',
+                emptyTitle: 'Add projects to mixing-carousel.json',
+                emptyDescription: 'Include title, description, image, and optional link to populate the carousel.',
+                failTitle: 'Unable to load projects right now.',
+                failDescription: 'Check mixing-carousel.json or refresh to try again.'
+            });
         });
 
-        function initMixingCarousel() {
-            const carousel = document.querySelector('[data-carousel=\"mixing\"]');
+        function fetchCarouselData() {
+            return fetch('mixing-carousel.json')
+                .then(response => response.json())
+                .then(data => {
+                    const slides = Array.isArray(data) ? data : data.items || [];
+                    return Array.isArray(slides) ? slides : [];
+                });
+        }
+
+        function isRecommendationSlide(slide) {
+            const type = (slide?.type || '').toString().toLowerCase();
+            return type === 'recommendation' || type === 'recomendation';
+        }
+
+        function initCarousel(selectorOrElement, slidesPromise, options = {}) {
+            const carousel = typeof selectorOrElement === 'string'
+                ? document.querySelector(selectorOrElement)
+                : selectorOrElement;
             if (!carousel) return;
 
             const imageEl = carousel.querySelector('.mixing-carousel-image img');
@@ -804,6 +880,8 @@
             const prevBtn = carousel.querySelector('[data-nav=\"prev\"]');
             const nextBtn = carousel.querySelector('[data-nav=\"next\"]');
             const controls = carousel.querySelector('.mixing-carousel-controls');
+
+            if (!descEl || !kickerEl || !titleEl || !counterEl || !cardLink || !controls) return;
 
             let descInner = descEl.querySelector('.mixing-carousel-description__inner');
             if (!descInner) {
@@ -817,6 +895,19 @@
 
             let slides = [];
             let index = 0;
+
+            const defaultKicker = options.defaultKicker || 'Recent Work';
+            const recommendationKicker = options.recommendationKicker || 'Recommendation';
+            const emptyKicker = options.emptyKicker || defaultKicker;
+            const filterSlides = options.filter || ((item) => !!item);
+
+            const preloadImage = (slide) => {
+                if (!slide || !slide.image) return;
+                const img = new Image();
+                img.decoding = 'async';
+                img.loading = 'eager';
+                img.src = slide.image;
+            };
 
             const updateScrollState = () => {
                 requestAnimationFrame(() => {
@@ -836,11 +927,6 @@
                 });
             };
 
-            const isRecommendationSlide = (slide) => {
-                const type = (slide?.type || '').toString().toLowerCase();
-                return type === 'recommendation' || type === 'recomendation';
-            };
-
             const updateNavVisibility = () => {
                 const showNav = slides.length > 1;
                 prevBtn.style.display = showNav ? 'grid' : 'none';
@@ -850,13 +936,14 @@
 
             const render = () => {
                 if (!slides.length) {
-                    kickerEl.textContent = 'Recent Work';
-                    titleEl.textContent = 'Add projects to mixing-carousel.json';
-                    descInner.textContent = 'Include title, description, image, and optional link to populate the carousel.';
+                    kickerEl.textContent = emptyKicker;
+                    titleEl.textContent = options.emptyTitle || 'Add items to mixing-carousel.json';
+                    descInner.textContent = options.emptyDescription || 'Include image, text, and optional link to populate the carousel.';
                     cardLink.removeAttribute('href');
                     cardLink.removeAttribute('target');
                     cardLink.removeAttribute('rel');
-                    cardLink.classList.remove('is-recommendation', 'no-link');
+                    cardLink.classList.remove('is-recommendation');
+                    cardLink.classList.add('no-link');
                     cardLink.setAttribute('aria-disabled', 'true');
                     cardLink.tabIndex = -1;
                     counterEl.textContent = '0/0';
@@ -865,7 +952,6 @@
                     return;
                 }
 
-                // Wrap index once here to keep navigation resilient
                 index = (index + slides.length) % slides.length;
                 const slide = slides[index];
                 const isRecommendation = isRecommendationSlide(slide);
@@ -873,11 +959,13 @@
                 const displayTitle = isRecommendation
                     ? (slide?.name || slide?.title || 'Client')
                     : (slide?.title || 'Untitled Project');
-                const kickerText = slide?.kicker || (isRecommendation ? 'Recommendation' : 'Recent Work');
+                const kickerText = slide?.kicker || (isRecommendation ? recommendationKicker : defaultKicker);
                 const descText = slide?.quote || slide?.description || '';
 
-                imageEl.src = slide.image;
-                imageEl.alt = slide.alt || (isRecommendation ? `${displayTitle}'s recommendation` : (slide.title || 'Mixing and mastering project artwork'));
+                if (imageEl && slide?.image) {
+                    imageEl.src = slide.image;
+                    imageEl.alt = slide.alt || (isRecommendation ? `${displayTitle}'s recommendation` : (slide.title || 'Mixing and mastering project artwork'));
+                }
                 kickerEl.textContent = kickerText;
                 titleEl.textContent = displayTitle;
                 descInner.textContent = descText;
@@ -902,6 +990,13 @@
 
                 updateNavVisibility();
                 updateScrollState();
+
+                if (slides.length > 1) {
+                    const nextSlide = slides[(index + 1) % slides.length];
+                    const prevSlide = slides[(index - 1 + slides.length) % slides.length];
+                    preloadImage(nextSlide);
+                    preloadImage(prevSlide);
+                }
             };
 
             const move = (delta) => {
@@ -920,22 +1015,17 @@
                 }
             });
 
-            fetch('mixing-carousel.json')
-                .then(response => response.json())
-                .then(data => {
-                    slides = Array.isArray(data) ? data : data.items || [];
-
-                    // Basic validation
-                    if (!Array.isArray(slides)) {
-                        slides = [];
-                    }
-
+            slidesPromise
+                .then((data) => {
+                    slides = (Array.isArray(data) ? data : []).filter(filterSlides);
+                    index = 0;
                     render();
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error('Error loading carousel data:', error);
-                    titleEl.textContent = 'Unable to load projects right now.';
-                    descInner.textContent = 'Check mixing-carousel.json or refresh to try again.';
+                    titleEl.textContent = options.failTitle || 'Unable to load items right now.';
+                    descInner.textContent = options.failDescription || 'Check mixing-carousel.json or refresh to try again.';
+                    counterEl.textContent = '0/0';
                     updateNavVisibility();
                     updateScrollState();
                 });
