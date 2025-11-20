@@ -907,11 +907,14 @@
 
             const updateScrollState = () => {
                 requestAnimationFrame(() => {
+                    const paddingAllowance = 24;
+                    descInner.style.paddingBottom = '0';
                     const overflowDistance = Math.max(0, descInner.scrollHeight - descEl.clientHeight);
-                    const distance = overflowDistance > 0 ? Math.ceil(overflowDistance + 8) : 0;
-                    const shouldScroll = distance > 1;
+                    const shouldScroll = overflowDistance > 0;
+                    const distance = shouldScroll ? Math.ceil(overflowDistance + 8 + paddingAllowance) : 0;
                     descEl.classList.toggle('is-scrolling', shouldScroll);
                     if (shouldScroll) {
+                        descInner.style.paddingBottom = `${paddingAllowance}px`;
                         const duration = Math.max(12, Math.min(24, distance / 8));
                         descInner.style.setProperty('--scroll-distance', `${distance}px`);
                         descInner.style.setProperty('--scroll-duration', `${duration}s`);
