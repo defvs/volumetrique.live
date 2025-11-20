@@ -905,8 +905,18 @@
                 img.src = slide.image;
             };
 
-            const updateScrollState = () => {
+            const updateScrollState = (restartAnimation = false) => {
                 requestAnimationFrame(() => {
+                    if (restartAnimation) {
+                        descInner.style.animation = 'none';
+                        descEl.classList.remove('is-scrolling');
+                        descInner.style.transform = 'translateY(0)';
+                        descInner.style.removeProperty('--scroll-distance');
+                        descInner.style.removeProperty('--scroll-duration');
+                        void descInner.offsetHeight; // force reflow so animation restarts from the top
+                        descInner.style.animation = '';
+                    }
+
                     const paddingAllowance = 24;
                     descInner.style.paddingBottom = '0';
                     const overflowDistance = Math.max(0, descInner.scrollHeight - descEl.clientHeight);
@@ -947,7 +957,7 @@
                     cardLink.tabIndex = -1;
                     counterEl.textContent = '0/0';
                     updateNavVisibility();
-                    updateScrollState();
+                    updateScrollState(true);
                     return;
                 }
 
@@ -987,7 +997,7 @@
                 }
 
                 updateNavVisibility();
-                updateScrollState();
+                updateScrollState(true);
 
                 if (slides.length > 1) {
                     const nextSlide = slides[(index + 1) % slides.length];
@@ -1025,7 +1035,7 @@
                     descInner.textContent = options.failDescription || 'Check mixing-carousel.json or refresh to try again.';
                     counterEl.textContent = '0/0';
                     updateNavVisibility();
-                    updateScrollState();
+                    updateScrollState(true);
                 });
         }
     </script>
