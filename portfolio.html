@@ -495,7 +495,7 @@
             max-width: 180px;
             width: min(180px, 32vw);
             height: min(180px, 32vw);
-            margin: 0 auto;
+            margin: 0 1rem;
             border: 2px solid rgba(255, 255, 255, 0.18);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 10px 25px rgba(0, 0, 0, 0.35);
         }
@@ -830,19 +830,20 @@
                 });
             });
 
-            const carouselDataPromise = fetchCarouselData();
+            const mixingDataPromise = fetchCarouselData('mixing-carousel.json');
+            const recommendationsDataPromise = fetchCarouselData('recommendations-carousel.json');
 
-            initCarousel('[data-carousel="recommendations"]', carouselDataPromise, {
-                filter: isRecommendationSlide,
+            initCarousel('[data-carousel="recommendations"]', recommendationsDataPromise, {
+                isRecommendation: true,
                 defaultKicker: 'Recommendation',
-                emptyTitle: 'Add recommendations to mixing-carousel.json',
-                emptyDescription: 'Tag entries with type: "recommendation" to feature client quotes here.',
+                emptyTitle: 'Add recommendations to recommendations-carousel.json',
+                emptyDescription: 'Populate recommendations-carousel.json with name, description, and image.',
                 failTitle: 'Unable to load recommendations right now.',
-                failDescription: 'Check mixing-carousel.json or refresh to try again.'
+                failDescription: 'Check recommendations-carousel.json or refresh to try again.'
             });
 
-            initCarousel('[data-carousel="mixing"]', carouselDataPromise, {
-                filter: (slide) => !isRecommendationSlide(slide),
+            initCarousel('[data-carousel="mixing"]', mixingDataPromise, {
+                isRecommendation: false,
                 defaultKicker: 'Recent Work',
                 emptyTitle: 'Add projects to mixing-carousel.json',
                 emptyDescription: 'Include title, description, image, and optional link to populate the carousel.',
@@ -851,18 +852,13 @@
             });
         });
 
-        function fetchCarouselData() {
-            return fetch('mixing-carousel.json')
+        function fetchCarouselData(path) {
+            return fetch(path)
                 .then(response => response.json())
                 .then(data => {
                     const slides = Array.isArray(data) ? data : data.items || [];
                     return Array.isArray(slides) ? slides : [];
                 });
-        }
-
-        function isRecommendationSlide(slide) {
-            const type = (slide?.type || '').toString().toLowerCase();
-            return type === 'recommendation' || type === 'recomendation';
         }
 
         function initCarousel(selectorOrElement, slidesPromise, options = {}) {
@@ -896,10 +892,10 @@
             let slides = [];
             let index = 0;
 
-            const defaultKicker = options.defaultKicker || 'Recent Work';
+            const recommendationMode = Boolean(options.isRecommendation);
+            const defaultKicker = options.defaultKicker || (recommendationMode ? 'Recommendation' : 'Recent Work');
             const recommendationKicker = options.recommendationKicker || 'Recommendation';
             const emptyKicker = options.emptyKicker || defaultKicker;
-            const filterSlides = options.filter || ((item) => !!item);
 
             const preloadImage = (slide) => {
                 if (!slide || !slide.image) return;
@@ -954,24 +950,23 @@
 
                 index = (index + slides.length) % slides.length;
                 const slide = slides[index];
-                const isRecommendation = isRecommendationSlide(slide);
-                const hasLink = Boolean(slide?.link) && !isRecommendation;
-                const displayTitle = isRecommendation
+                const hasLink = Boolean(slide?.link) && !recommendationMode;
+                const displayTitle = recommendationMode
                     ? (slide?.name || slide?.title || 'Client')
                     : (slide?.title || 'Untitled Project');
-                const kickerText = slide?.kicker || (isRecommendation ? recommendationKicker : defaultKicker);
+                const kickerText = slide?.kicker || (recommendationMode ? recommendationKicker : defaultKicker);
                 const descText = slide?.quote || slide?.description || '';
 
                 if (imageEl && slide?.image) {
                     imageEl.src = slide.image;
-                    imageEl.alt = slide.alt || (isRecommendation ? `${displayTitle}'s recommendation` : (slide.title || 'Mixing and mastering project artwork'));
+                    imageEl.alt = slide.alt || (recommendationMode ? `${displayTitle}'s recommendation` : (slide.title || 'Mixing and mastering project artwork'));
                 }
                 kickerEl.textContent = kickerText;
                 titleEl.textContent = displayTitle;
                 descInner.textContent = descText;
                 counterEl.textContent = `${index + 1}/${slides.length}`;
 
-                cardLink.classList.toggle('is-recommendation', isRecommendation);
+                cardLink.classList.toggle('is-recommendation', recommendationMode);
                 cardLink.classList.toggle('no-link', !hasLink);
 
                 if (hasLink) {
@@ -1009,7 +1004,7 @@
             nextBtn.addEventListener('click', () => move(1));
             cardLink.addEventListener('click', (event) => {
                 const slide = slides[index];
-                const linkAllowed = slide && slide.link && !isRecommendationSlide(slide);
+                const linkAllowed = slide && slide.link && !recommendationMode;
                 if (!slides.length || !linkAllowed) {
                     event.preventDefault();
                 }
@@ -1017,7 +1012,7 @@
 
             slidesPromise
                 .then((data) => {
-                    slides = (Array.isArray(data) ? data : []).filter(filterSlides);
+                    slides = Array.isArray(data) ? data : [];
                     index = 0;
                     render();
                 })
