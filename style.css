@@ -1,5 +1,11 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 
+:root {
+	--card-radius: 16px;
+	--card-bg: #0008;
+	--glass-blur: blur(4px);
+}
+
 html, body {
 	height: 100%;
 	width: 100%;
@@ -11,22 +17,24 @@ html, body {
 .centered-flex {
 	/*margin: 24 px 0;*/
 	height: auto;
-	width: 40%;
+	width: clamp(320px, 40vw, 920px);
 
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: stretch;
+	gap: 12px;
 
 	color: white;
 
 	margin: auto;
-	padding: 24px 0;
+	padding: clamp(16px, 2vw, 28px) 0;
 
 }
 
 .center-container {
 	width: 100%;
 	height: 100%;
+	padding: 12px;
 
 	perspective: 500px;
 	perspective-origin: center;
@@ -43,9 +51,9 @@ html, body {
 	background: #fff5 url("logo.png") no-repeat center;
 	background-size: auto 80%;
 	background-blend-mode: exclusion;
-	border-radius: 16px;
+	border-radius: var(--card-radius);
 	overflow: hidden;
-	backdrop-filter: blur(4px);
+	backdrop-filter: var(--glass-blur);
 }
 
 #background-video {
@@ -66,28 +74,30 @@ html, body {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: stretch;
+	gap: 12px;
 }
 
 ul.small-link-container {
-	backdrop-filter: blur(4px);
-	background-color: #0008;
+	backdrop-filter: var(--glass-blur);
+	background-color: var(--card-bg);
 	border: none;
-	border-radius: 16px;
-	padding: 8px 0;
-	margin: 16px 0 16px 16px;
+	border-radius: var(--card-radius);
+	padding: clamp(8px, 1vw, 12px);
+	margin: 16px 0 16px 8px;
 	list-style-type: none;
-	flex-grow: 1;
+	flex: 0 0 auto;
+	width: min-content;
+	min-height: 100%;
+	box-sizing: border-box;
 
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: center;
+	gap: 10px;
 }
 ul.small-link-container > li {
-	font-size: 400%;
-}
-ul.small-link-container > li:not(:last-child) {
-	margin: 0 0 8px 0;
+	font-size: clamp(2em, 2.5vw, 2.8em);
 }
 
 ul.small-link-container > li > * {
@@ -111,15 +121,16 @@ ul.small-link-container > li > a:hover {
 }
 
 ul.link-container {
-	backdrop-filter: blur(4px);
+	backdrop-filter: var(--glass-blur);
 	/*background-color: rgba(255, 255, 255, 0.07);*/
 	border: none;
-	border-radius: 16px;
+	border-radius: var(--card-radius);
 	/*padding: 8px;*/
 	padding: 0;
 	margin: 16px 0;
 	list-style-type: none;
 	flex-grow: 1;
+	min-width: 0;
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: space-around;
@@ -127,8 +138,8 @@ ul.link-container {
 }
 
 ul.link-container > li {
-	background-color: #0008;
-	border-radius: 16px;
+	background-color: var(--card-bg);
+	border-radius: var(--card-radius);
 }
 
 ul.link-container > li:not(:last-child) {
@@ -188,7 +199,7 @@ ul.link-container > li > a:hover > span {
 
 @media not screen and (min-aspect-ratio: 14/10) {
 	.centered-flex {
-		width: 90%;
+		width: min(96vw, 760px);
 	}
 
 	#flex-horizontal-divider {
@@ -198,12 +209,14 @@ ul.link-container > li > a:hover > span {
 	ul.small-link-container {
 		flex-flow: row nowrap;
 		justify-content: space-evenly;
-		margin: 16px 0 16px 0;
+		margin: 8px 0 0 0;
+		width: 100%;
+		min-height: auto;
 	}
 
 	ul.small-link-container > li {
-		margin: 0 16px !important;
-		font-size: 2.5em;
+		margin: 0 8px !important;
+		font-size: clamp(1.8em, 6vw, 2.4em);
 	}
 }
 
