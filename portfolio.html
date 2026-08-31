@@ -411,14 +411,6 @@
             justify-content: center;
         }
 
-        .mixing-carousel-kicker {
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-            color: #7B3DF4;
-            text-transform: uppercase;
-        }
-
         .mixing-carousel-title {
             margin: 0;
             font-family: 'Montserrat', sans-serif;
@@ -654,7 +646,6 @@
                         <img src="assets/mixing/project-hybrid.svg" alt="Client recommendation avatar" loading="lazy">
                     </div>
                     <div class="mixing-carousel-copy">
-                        <div class="mixing-carousel-kicker">Recommendation</div>
                         <h3 class="mixing-carousel-title">Loading recommendations...</h3>
                         <p class="mixing-carousel-description">Fetching testimonials. Check back in a moment.</p>
                     </div>
@@ -691,7 +682,6 @@
                             loading="lazy">
                     </div>
                     <div class="mixing-carousel-copy">
-                        <div class="mixing-carousel-kicker">Recent Work</div>
                         <h3 class="mixing-carousel-title">Loading projects...</h3>
                         <p class="mixing-carousel-description">Hang tight while we load the latest mixes and masters.
                         </p>
@@ -835,7 +825,6 @@
 
             initCarousel('[data-carousel="recommendations"]', recommendationsDataPromise, {
                 isRecommendation: true,
-                defaultKicker: 'Recommendation',
                 emptyTitle: 'Add recommendations to recommendations-carousel.json',
                 emptyDescription: 'Populate recommendations-carousel.json with name, description, and image.',
                 failTitle: 'Unable to load recommendations right now.',
@@ -844,7 +833,6 @@
 
             initCarousel('[data-carousel="mixing"]', mixingDataPromise, {
                 isRecommendation: false,
-                defaultKicker: 'Recent Work',
                 emptyTitle: 'Add projects to mixing-carousel.json',
                 emptyDescription: 'Include title, description, image, and optional link to populate the carousel.',
                 failTitle: 'Unable to load projects right now.',
@@ -868,7 +856,6 @@
             if (!carousel) return;
 
             const imageEl = carousel.querySelector('.mixing-carousel-image img');
-            const kickerEl = carousel.querySelector('.mixing-carousel-kicker');
             const titleEl = carousel.querySelector('.mixing-carousel-title');
             const descEl = carousel.querySelector('.mixing-carousel-description');
             const counterEl = carousel.querySelector('.carousel-counter');
@@ -877,7 +864,7 @@
             const nextBtn = carousel.querySelector('[data-nav=\"next\"]');
             const controls = carousel.querySelector('.mixing-carousel-controls');
 
-            if (!descEl || !kickerEl || !titleEl || !counterEl || !cardLink || !controls) return;
+            if (!descEl || !titleEl || !counterEl || !cardLink || !controls) return;
 
             let descInner = descEl.querySelector('.mixing-carousel-description__inner');
             if (!descInner) {
@@ -893,9 +880,6 @@
             let index = 0;
 
             const recommendationMode = Boolean(options.isRecommendation);
-            const defaultKicker = options.defaultKicker || (recommendationMode ? 'Recommendation' : 'Recent Work');
-            const recommendationKicker = options.recommendationKicker || 'Recommendation';
-            const emptyKicker = options.emptyKicker || defaultKicker;
 
             const preloadImage = (slide) => {
                 if (!slide || !slide.image) return;
@@ -945,7 +929,6 @@
 
             const render = () => {
                 if (!slides.length) {
-                    kickerEl.textContent = emptyKicker;
                     titleEl.textContent = options.emptyTitle || 'Add items to mixing-carousel.json';
                     descInner.textContent = options.emptyDescription || 'Include image, text, and optional link to populate the carousel.';
                     cardLink.removeAttribute('href');
@@ -967,14 +950,12 @@
                 const displayTitle = recommendationMode
                     ? (slide?.name || slide?.title || 'Client')
                     : (slide?.title || 'Untitled Project');
-                const kickerText = slide?.kicker || (recommendationMode ? recommendationKicker : defaultKicker);
                 const descText = slide?.quote || slide?.description || '';
 
                 if (imageEl && slide?.image) {
                     imageEl.src = slide.image;
                     imageEl.alt = slide.alt || (recommendationMode ? `${displayTitle}'s recommendation` : (slide.title || 'Mixing and mastering project artwork'));
                 }
-                kickerEl.textContent = kickerText;
                 titleEl.textContent = displayTitle;
                 descInner.textContent = descText;
                 counterEl.textContent = `${index + 1}/${slides.length}`;
