@@ -8,9 +8,15 @@
     },
     {
       "title": "YOKAI - Lapis Lazuli",
-      "description": "Rock/Metal/Electronic — Instrumental songs mixing (Tr 3, 5, 7~10)",
+      "description": "Rock/Metal/Electronic — Instrumental songs mixing & mastering (Tr 3, 5, 7~10)",
       "image": "assets/mixing/lapis-lazuli.webp",
       "link": "https://kodamasounds.bandcamp.com/album/lapis-lazuli"
+    },
+    {
+      "title": "YOKAI feat. eili & v1ris - Per Past Pledges",
+      "description": "Rock — Instrumental mixing",
+      "image": "assets/mixing/per-past-pledges.webp",
+      "link": "https://kodamasounds.bandcamp.com/track/per-past-pledges"
     }
   ]
 }
